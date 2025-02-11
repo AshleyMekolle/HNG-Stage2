@@ -392,9 +392,11 @@ const App: React.FC = () => {
       <Ticket size={24} />
       <span>ticz</span>
       </div>
+      <div className="links">
       <a href="/events" className="active">Events</a>
       <a href="/my-tickets">My Tickets</a>
       <a href="/about">About Project</a>
+      </div>
     </div>
     <a href="/my-tickets" className="my-tickets-btn">
       MY TICKETS <ArrowRight size={16} />
