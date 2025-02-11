@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Ticket, ArrowRight, Upload, Download } from 'lucide-react';
+import { Ticket, ArrowRight, Download, CloudUpload } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toPng } from 'html-to-image';
 import { BookingState, TicketType } from './types/types';
@@ -129,9 +129,10 @@ const App: React.FC = () => {
       case 1:
         return (
           <>
+        <div className="step-header">
             <div className="step-indicator">
               <div className="step-header">
-                <div>
+                <div className='step-container'>
                   <h2 className="step-title">Ticket Selection</h2>
                   <span className="step-number">Step 1/3</span>
                 </div>
@@ -140,7 +141,9 @@ const App: React.FC = () => {
                 <div className="progress-bar" style={{ width: '33.33%' }} />
               </div>
             </div>
+            </div>
 
+          <div className="event-container">
             <div className="event-banner">
               <h1 className="event-title">Techember Fest '25</h1>
               <p className="event-description">
@@ -150,7 +153,9 @@ const App: React.FC = () => {
                 📍 04 Rumens road, Ikoyi, Lagos || March 15, 2025 | 7:00 PM
               </p>
             </div>
+            <div className="line"></div>
 
+          <div className='select'>Select ticket type
             <div className="ticket-grid">
               {ticketTypes.map(ticket => (
                 <div
@@ -160,15 +165,16 @@ const App: React.FC = () => {
                   } ${ticket.available === 0 ? 'sold-out' : ''}`}
                   onClick={() => ticket.available > 0 && handleTicketSelect(ticket)}
                 >
-                  <div className="ticket-type">{ticket.label}</div>
                   <div className="ticket-price">
                     {ticket.price === 0 ? 'Free' : `$${ticket.price}`}
                   </div>
+                  <div className="ticket-type">{ticket.label}</div>
                   <div className="ticket-availability">
-                    {ticket.available === 0 ? 'SOLD OUT' : `${ticket.available} left!`}
+                    {ticket.available === 0 ? 'SOLD OUT' : `${ticket.available}/${ticket.available}`}
                   </div>
                 </div>
               ))}
+            </div>
             </div>
 
             <div className="quantity-selector">
@@ -197,15 +203,17 @@ const App: React.FC = () => {
                 Next
               </button>
             </div>
+            </div>
           </>
         );
 
       case 2:
         return (
           <>
+          <div className="step-header">
             <div className="step-indicator">
               <div className="step-header">
-                <div>
+                <div className='step-container'>
                   <h2 className="step-title">Attendee Details</h2>
                   <span className="step-number">Step 2/3</span>
                 </div>
@@ -214,7 +222,8 @@ const App: React.FC = () => {
                 <div className="progress-bar" style={{ width: '66.66%' }} />
               </div>
             </div>
-
+            </div>
+             <div className="details">
             <form onSubmit={handleAttendeeDetailsSubmit}>
               <div className="form-group">
                 <label className="form-label">Upload Profile Photo</label>
@@ -222,7 +231,7 @@ const App: React.FC = () => {
                   {profileImage ? (
                     <img src={profileImage} alt="Profile" className="upload-preview" />
                   ) : (
-                    <Upload className="upload-icon" size={32} />
+                    <CloudUpload className="upload-icon" size={32} />
                   )}
                   <span>Drag & drop or click to upload</span>
                   <input
@@ -242,8 +251,10 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Enter your name</label>
+              <div className="line"></div>
+
+              <div className="form-name">
+                <label className="">Enter your name</label>
                 <input
                   type="text"
                   name="name"
@@ -253,22 +264,24 @@ const App: React.FC = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Enter your email *</label>
+              <div className="form-name">
+                <label className="">Enter your email *</label>
                 <input
                   type="email"
                   name="email"
                   className="form-input"
+                  placeholder='ashley@hng.com'
                   required
                   defaultValue={userInfo.email}
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">About the project</label>
+              <div className="form-name">
+                <label className="">Special request?</label>
                 <textarea
                   name="project"
                   className="form-input"
+                  placeholder='Textarea'
                   rows={4}
                   defaultValue={userInfo.project}
                 />
@@ -287,6 +300,7 @@ const App: React.FC = () => {
                 </button>
               </div>
             </form>
+            </div>
           </>
         );
 
@@ -370,16 +384,23 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-header">
       <header className="header">
-        <a href="/" className="logo">
-          <Ticket size={24} />
-          <span>ticz</span>
-        </a>
-        <a href="/my-tickets" className="my-tickets-btn">
-          MY TICKETS <ArrowRight size={16} />
-        </a>
-      </header>
+    <nav className="navbar">
+    <div className="nav-links">
+      <div className='logo'>
+      <Ticket size={24} />
+      <span>ticz</span>
+      </div>
+      <a href="/events" className="active">Events</a>
+      <a href="/my-tickets">My Tickets</a>
+      <a href="/about">About Project</a>
+    </div>
+    <a href="/my-tickets" className="my-tickets-btn">
+      MY TICKETS <ArrowRight size={16} />
+    </a>
+  </nav>
+</header>
 
       <main className="card">{renderStep()}</main>
     </div>
