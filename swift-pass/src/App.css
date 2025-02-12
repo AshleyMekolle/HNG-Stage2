@@ -763,8 +763,56 @@ body {
 }
 
 @media (max-width: 768px) {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002b36; 
+    padding: 10px 20px;
+    border-radius: 12px; 
+    border: 1px solid #004d61;
+  }
+
+  .ticket-logo {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .ticket-icon {
+    background-color: #004d61; 
+    padding: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  .my-tickets-btn {
+    background-color: #ffffff;
+    color: #333333;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+  }
+
+  .my-tickets-btn:hover {
+    background-color: #e0e0e0;
+  }
+
+  .my-tickets-btn .arrow {
+    margin-left: 10px;
+    font-size: 16px;
+  }
   .ticket-grid {
     grid-template-columns: 1fr;
+  }
+  .details{
+    
   }
 
   .links {
@@ -805,6 +853,51 @@ body {
 }
 
 @media (max-width: 480px) {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002b36; 
+    padding: 10px 20px;
+    border-radius: 12px; 
+    border: 1px solid #004d61;
+  }
+
+  .ticket-logo {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .ticket-icon {
+    background-color: #004d61; 
+    padding: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  .my-tickets-btn {
+    background-color: #ffffff;
+    color: #333333;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+  }
+
+  .my-tickets-btn:hover {
+    background-color: #e0e0e0;
+  }
+
+  .my-tickets-btn .arrow {
+    margin-left: 10px;
+    font-size: 16px;
+  }
   .ticket-grid {
     grid-template-columns: 1fr;
   }
@@ -823,8 +916,8 @@ body {
   }
 
   .upload-image-area {
-    width: 240px;  
-    height: 240px;  
+    width: 200x;  
+    height: 200px; 
    
   }
   .step-title {

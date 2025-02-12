@@ -499,7 +499,7 @@ const App: React.FC = () => {
           <div className="nav-links">
             <div className='logo'>
               <img src="../src/ticket-01.png" alt="Ticket icon" className='ticket-icon' />
-              <span><img src='../src/ticz.png' alt="Ticz logo" /></span>
+              <span><img src='../src/ticz.png' alt="Ticz logo" className='ticket-logo'/></span>
             </div>
             <div className="links">
               <a href="/events" className="active">Events</a>
