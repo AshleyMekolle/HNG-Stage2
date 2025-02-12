@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Download, UploadCloud as CloudUpload, Mail } from 'lucide-react';
+import { ArrowRight, UploadCloud as CloudUpload, Mail } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import Barcode from 'react-barcode';
 import { toPng } from 'html-to-image';
 import { BookingState, TicketType, FormErrors } from './types/types';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -394,10 +395,8 @@ const App: React.FC = () => {
                 </div>
                 </div>
 
-
-// Add URL input option
-<div className="form-group">
-  <label htmlFor="imageUrl">Or enter image URL</label>
+<div className="form-name">
+  <label htmlFor="imageUrl">Enter image URL</label>
   <input
     type="url"
     id="imageUrl"
@@ -414,7 +413,7 @@ const App: React.FC = () => {
       } else {
         setFormErrors(prev => ({
           ...prev,
-          profileImage: 'Please enter a valid image URL'
+          profileImage: ''
         }));
       }
     }}
@@ -458,26 +457,28 @@ const App: React.FC = () => {
       case 3:
         return (
           <>
-            <div className="step-indicator">
-              <div className="step-header">
-                <div>
-                  <h2 className="step-title">Ready</h2>
-                  <span className="step-number">Step 3/3</span>
+         
+         <div className="step-header-attendee">
+              <div className="step-indicator">
+                <div className="step-header">
+                  <div className='step-container'>
+                    <h2 className="step-title">Ready</h2>
+                    <span className="step-number">Step 3/3</span>
+                  </div>
+                </div>
+                <div className="progress-container">
+                  <div className="progress-bar" style={{ width: '100%' }} />
                 </div>
               </div>
-              <div className="progress-container">
-                <div className="progress-bar" style={{ width: '100%' }} />
-              </div>
             </div>
-
-            <div className="event-banner">
+            <div className="event-banner-ready">
               <h2>Your Ticket is Booked!</h2>
-              <p>You can download or check your email for a copy</p>
+              <p>Check your email or you can download it</p>
             </div>
 
-                 <div className="ticket-preview" ref={ticketRef}>
-      <div className="ticket-content">
-        <div className="ticket-header">
+          <div className="ticket-preview" ref={ticketRef}>
+             <div className="ticket-content">
+            <div className="ticket-header">
           <h3 className="ticket-title">Techember Fest '25</h3>
           {userInfo.profileImage ? (
             <img 
@@ -511,26 +512,22 @@ const App: React.FC = () => {
               <span className="detail-label">Quantity</span>
               <span className="detail-value">{bookingState.quantity}</span>
             </div>
+            <div className="detail-group-special">
+              <span className="detail-label">Special request?</span>
+              <span className="detail-value">{userInfo.project}</span>
+            </div>
           </div>
-
           <div className="ticket-divider"></div>
-
-          <div className="detail-group">
-            <span className="detail-label">Venue</span>
-            <span className="detail-value">04 Rumens road, Ikoyi, Lagos</span>
-          </div>
-          <div className="detail-group">
-            <span className="detail-label">Date & Time</span>
-            <span className="detail-value">March 15, 2025 | 7:00 PM</span>
-          </div>
-
           <div className="barcode-section">
-            <QRCodeSVG
+            {/* <QRCodeSVG
               value={`https://techember-fest.com/ticket/${userInfo.email}`}
               size={120}
               level="H"
               style={{ background: 'white', padding: '8px', borderRadius: '8px' }}
-            />
+            /> */}
+            <Barcode 
+            value="1234567890" 
+            displayValue={true} />
           </div>
         </div>
                 </div>
@@ -547,7 +544,6 @@ const App: React.FC = () => {
                     onClick={handleDownloadTicket}
                     aria-label="Download ticket"
                   >
-                    <Download size={16} aria-hidden="true" />
                     Download Ticket
                   </button>
                 </div>

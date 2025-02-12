@@ -1,7 +1,7 @@
 
 :root {
   --primary: #36B5B0;
-  --background: #02191D;
+  --background: #041E23;
   --text: #ffffff;
   --card-bg: #041E23;
   --border-radius: 12px;
@@ -319,6 +319,7 @@ body {
   color: #FAFAFA;
   font-size: 1rem;
   box-sizing: border-box;
+  line-height: 1.5; 
 }
 
 .mail-icon {
@@ -331,6 +332,11 @@ body {
 }
 
 .form-input-name:focus {
+  outline: none;   
+  box-shadow: none;  
+}
+
+.form-input:focus {
   outline: none;   
   box-shadow: none;  
 }
@@ -429,7 +435,7 @@ body {
   color: #FFFFFF;
 }
 
-.ticket-preview {
+/* .ticket-preview {
   background: linear-gradient(45deg, #36B5B0, #1a5c5a);
   border-radius: var(--border-radius);
   padding: 2rem;
@@ -486,7 +492,7 @@ body {
   border-radius: 1rem;
   font-size: 0.75rem;
   margin-top: 1rem;
-}
+} */
 .container-header {
   width: 100%;
 }
@@ -583,7 +589,7 @@ body {
 .error-message {
   color: #ff4444;
   font-size: 0.875rem;
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
 }
 
 
@@ -608,22 +614,88 @@ body {
 }
 
 /* Ticket Styles */
+
+.event-banner-ready {
+  background: transparent;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom:1rem;
+}
+
 .ticket-preview {
-  background: #001F1E;
   border-radius: 16px;
   padding: 32px;
   max-width: 500px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   color: #E5E7EB;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column; 
+  gap: 16px;
+  align-items: center;  
+  justify-content: center;
+  height: 100vh;
+}
+
+
+.ticket-content {
+  background: radial-gradient(circle, #072C31 0%, #000000 100%);
+  /* border: 1px solid #24A0B5;   */
+  border-radius: 12px;
+  padding: 24px;
+  width: 300px;
+  height: 600px;
+  overflow: hidden;
   position: relative;
 }
 
-.ticket-content {
-  background: #003331;
-  border-radius: 12px;
-  padding: 24px;
-  position: relative;
+/* Inverted border radius effect on all four corners */
+.ticket-content::before,
+.ticket-content::after,
+.ticket-content .corner-top-right,
+.ticket-content .corner-bottom-left {
+  content: '';
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background-color: #041E23;
+  border-radius: 50%;
+  z-index: 2;
 }
+
+/* Top-left corner */
+.ticket-content::before {
+  top: -24px;
+  left: -24px;
+  border: 1px solid #24A0B5 
+}
+
+/* Bottom-right corner */
+.ticket-content::after {
+  bottom: -24px;
+  right: -24px;
+  border: 1px solid #24A0B5  
+}
+
+/* Top-right corner */
+.ticket-content .corner-top-right {
+  top: -24px;
+  right: -24px;
+  border: 1px solid #24A0B5 
+}
+
+/* Bottom-left corner */
+.ticket-content .corner-bottom-left {
+  bottom: -24px;
+  left: -24px;
+  border: 1px solid #24A0B5
+}
+
 
 .ticket-header {
   text-align: center;
@@ -640,25 +712,42 @@ body {
 .ticket-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
   margin: 24px 0;
+  background-color: #08343C;
+  width: 100%;                 
+  height: auto;                 
+  padding: 4px;                 
+  gap: 0;
+  border-radius: 8px;
+  border: 1px solid #133D44;
 }
 
 .detail-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  width: 100%;                  
+  height: auto;               
+  padding: 4px;                  
+  border-radius: 0;                     
+  gap: 4px; 
+  border: 1px solid #12464E;   
+  border-top: none; 
+  border-right: none;
+  border-left: none;               
 }
 
-.detail-label {
-  color: #64748B;
-  font-size: 12px;
-  text-transform: uppercase;
+.detail-label{
+  font-weight: 400;
+  font-size: 10;
+  opacity: 0.3;
+  color: #FFFFFF;
 }
+
 
 .detail-value {
-  color: #fff;
-  font-size: 14px;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .ticket-divider {
@@ -681,8 +770,9 @@ body {
   position: absolute;
   width: 24px;
   height: 24px;
-  background: #001F1E;
-  border-radius: 50%;
+  background: #041E23;
+  border: 1px solid #24A0B5;
+  border-radius: 80%;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -697,7 +787,13 @@ body {
 
 .barcode-section {
   text-align: center;
-  padding: 24px 0 0;
+  transform: scale(0.75);  
+  transform-origin: top left;
+  width: 25px;
+  height: 20px;
+}
+.barcode-section svg {
+  background: none !important;    
 }
 
 .profile-image {
