@@ -39,7 +39,7 @@ body {
 }
 
 .card {
-  background: #041E23;
+  background: transparent;
   border-radius: 40px;
   padding: 1.5rem;
   width: 100%;
@@ -565,7 +565,7 @@ body {
   border: 2px solid rgba(213, 234, 0, 0.1); 
   border-radius: 12px; 
   background-color: #FFFFFF; 
-  color: #D5EA00;
+  color: #0A0C11;
   font-size: 16px; 
   font-weight: 400; 
   text-align: center; 
@@ -770,7 +770,7 @@ body {
     background-color: #002b36; 
     padding: 10px 20px;
     border-radius: 12px; 
-    border: 1px solid #004d61;
+    border: none;
   }
 
   .ticket-logo {
@@ -790,7 +790,7 @@ body {
 
   .my-tickets-btn {
     background-color: #ffffff;
-    color: #333333;
+    color: #0A0C11;
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
@@ -811,8 +811,9 @@ body {
   .ticket-grid {
     grid-template-columns: 1fr;
   }
-  .details{
-    
+  .card {
+    width: 100%;
+    padding: 1rem;
   }
 
   .links {
@@ -860,7 +861,7 @@ body {
     background-color: #002b36; 
     padding: 10px 20px;
     border-radius: 12px; 
-    border: 1px solid #004d61;
+    border: none;
   }
 
   .ticket-logo {
@@ -878,9 +879,13 @@ body {
     margin-right: 8px;
   }
 
+  .card {
+    width: 100%;
+    padding: 1rem;
+  }
   .my-tickets-btn {
     background-color: #ffffff;
-    color: #333333;
+    color: #0A0C11;
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
@@ -900,6 +905,9 @@ body {
   }
   .ticket-grid {
     grid-template-columns: 1fr;
+  }
+   .details{
+  margin: 8px;
   }
 
   .form-group {
