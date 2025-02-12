@@ -31,3 +31,8 @@ export interface TicketType {
     email?: string;
     profileImage?: string;
   }
+
+  export interface CloudinaryResponse {
+    secure_url: string;
+   
+  }

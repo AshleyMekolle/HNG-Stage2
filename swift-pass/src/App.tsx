@@ -3,6 +3,7 @@ import { ArrowRight, Download, UploadCloud as CloudUpload, Mail } from 'lucide-r
 import { QRCodeSVG } from 'qrcode.react';
 import { toPng } from 'html-to-image';
 import { BookingState, TicketType, FormErrors } from './types/types';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { validateEmail, validateImageUrl } from './utils/validation';
 import { saveFormData, getFormData } from './utils/IndexedDB';
 import './App.css';
@@ -18,6 +19,13 @@ const getInitialTicketTypes = (): TicketType[] => {
     { type: 'VVIP', price: 150, available: 20, label: 'VVIP ACCESS' },
   ];
 };
+
+
+interface CloudinaryResponse {
+  secure_url: string;
+  // other fields...
+}
+
 
 interface UserInfo {
   name: string;
@@ -85,19 +93,40 @@ const App: React.FC = () => {
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadToCloudinary = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'YOUR_UPLOAD_PRESET');
+    
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload`,
+      {
+        method: 'POST',
+        body: formData
+      }
+    );
+    
+    const data: CloudinaryResponse = await response.json();
+    return data.secure_url;
+  };
+  
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageData = reader.result as string;
-        setProfileImage(imageData);
+      try {
+        const imageUrl = await uploadToCloudinary(file);
+        setProfileImage(imageUrl);
         setUserInfo(prev => ({
           ...prev,
-          profileImage: imageData,
+          profileImage: imageUrl
         }));
-      };
-      reader.readAsDataURL(file);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        setFormErrors(prev => ({
+          ...prev,
+          profileImage: 'Failed to upload image. Please try again.'
+        }));
+      }
     }
   };
 
@@ -127,14 +156,25 @@ const App: React.FC = () => {
     }
   };
 
+  const validateImageUrl = (url: string): boolean => {
+    // Check if it's a valid Cloudinary URL
+    const cloudinaryPattern = /^https?:\/\/res\.cloudinary\.com\//;
+    // Or any valid image URL
+    const imageUrlPattern = /^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i;
+    
+    return cloudinaryPattern.test(url) || imageUrlPattern.test(url);
+  };
+  
   const handleAttendeeDetailsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Get form data
     const formData = new FormData(e.currentTarget);
     const newUserInfo = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
       project: formData.get('project') as string,
-      profileImage,
+      profileImage: profileImage // Use the state value directly
     };
 
     const errors: FormErrors = {};
@@ -353,6 +393,33 @@ const App: React.FC = () => {
                   )}
                 </div>
                 </div>
+
+
+// Add URL input option
+<div className="form-group">
+  <label htmlFor="imageUrl">Or enter image URL</label>
+  <input
+    type="url"
+    id="imageUrl"
+    className="form-input"
+    placeholder="https://example.com/image.jpg"
+    onChange={(e) => {
+      const url = e.target.value;
+      if (validateImageUrl(url)) {
+        setProfileImage(url);
+        setUserInfo(prev => ({
+          ...prev,
+          profileImage: url
+        }));
+      } else {
+        setFormErrors(prev => ({
+          ...prev,
+          profileImage: 'Please enter a valid image URL'
+        }));
+      }
+    }}
+  />
+</div>
 
                 <div className="form-name">
                   <label htmlFor="project">Special request?</label>
