@@ -5,7 +5,7 @@ import Barcode from 'react-barcode';
 import { toPng } from 'html-to-image';
 import { BookingState, TicketType, FormErrors } from './types/types';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { validateEmail, validateImageUrl } from './utils/validation';
+import { validateEmail } from './utils/validation';
 import { saveFormData, getFormData } from './utils/IndexedDB';
 import './App.css';
 

@@ -19,7 +19,7 @@ body {
   width: 100%;
   background-color: var(--background);
   color: var(--text);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,6 +114,7 @@ body {
   font-size: 62px;
   margin: 0 0 1rem 0;
   font-weight: 400;
+  font-family: 'Road Rage', sans-serif; /* For headings */
 }
 
 .event-description {
@@ -498,7 +499,6 @@ body {
 }
 
 .header {
-  background-color: #02191D;
   width: 100vw;               
   padding: 1rem  3rem 3rem 3rem;
   display: flex;
