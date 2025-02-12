@@ -480,6 +480,7 @@ const App: React.FC = () => {
              <div className="ticket-content">
             <div className="ticket-header">
           <h3 className="ticket-title">Techember Fest '25</h3>
+          <div className="event-location">📍 04 Rumens road, Ikoyi, Lagos || March 15, 2025 | 7:00 PM</div> 
           {userInfo.profileImage ? (
             <img 
               src={userInfo.profileImage} 
