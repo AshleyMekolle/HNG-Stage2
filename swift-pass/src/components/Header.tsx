@@ -8,8 +8,8 @@ const Header: React.FC = () => {
       <nav className="navbar">
         <div className="nav-links">
           <div className='logo'>
-            <img src="../assets/ticket-01.png" alt="ticket-icon" className='ticket-icon' />
-            <span><img src='../assets/ticz.png' alt="ticz-logo" className='ticket-logo'/></span>
+            <img src="/ticket-01.png" alt="ticket-icon" className='ticket-icon' />
+            <span><img src='/ticz.png' alt="ticz-logo" className='ticket-logo'/></span>
           </div>
           <div className="links">
             <a href="/events" className="active">Events</a>
