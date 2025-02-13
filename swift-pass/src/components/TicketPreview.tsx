@@ -1,5 +1,4 @@
 import React, { RefObject } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import Barcode from 'react-barcode';
 import { UserInfo, BookingState } from '../types/types';
 
@@ -30,22 +29,14 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({
           <div className="ticket-header">
             <h3 className="ticket-title">Techember Fest '25</h3>
             <div className="event-location">📍 04 Rumens road, Ikoyi, Lagos || March 15, 2025 | 7:00 PM</div> 
-            {userInfo.profileImage ? (
+            {userInfo.profileImage && (
               <img 
                 src={userInfo.profileImage} 
                 alt="Profile" 
                 className="profile-image"
                 style={{
-                 
                   objectFit: 'cover',
-                 
                 }}
-              />
-            ) : (
-              <QRCodeSVG
-                value="https://techember-fest.com/ticket/123"
-                size={100}
-                level="H"
               />
             )}
           </div>
@@ -78,6 +69,7 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({
             <Barcode 
               value="1234567890" 
               displayValue={true}
+              height={30} 
             />
           </div>
         </div>

@@ -11,9 +11,10 @@ interface AttendeeFormProps {
   onImageUpload: ImageUploadHandler;
   onImageDrop: ImageDropHandler;
   profileImage: string | null;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>, errors: FormErrors) => void;
   onBack: () => void;
   isUploading: boolean;
+  uploadError: string | null; // Add uploadError prop
   selectedTicketPrice?: number;
 }
 
@@ -72,11 +73,46 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
   onImageUpload,
   onBack,
   isUploading,
+  uploadError, // Add uploadError prop
   selectedTicketPrice
 }) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+
+    // Validate all required fields
+    const errors: FormErrors = {};
+    if (!name.trim()) {
+      errors.name = 'Name is required';
+    }
+    if (!email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    if (!profileImage) {
+      errors.profileImage = 'Please upload an image';
+    }
+    if (uploadError) {
+      errors.profileImage = uploadError; // Display upload error message
+    }
+
+    // If there are errors, prevent form submission and display error messages
+    if (Object.keys(errors).length > 0) {
+      onSubmit(e, errors);
+      return;
+    }
+
+    // If no errors, proceed with form submission
+    onSubmit(e, {});
+  };
+
   return (
     <div className="details">
-      <form onSubmit={onSubmit} noValidate>
+      <form onSubmit={handleSubmit} noValidate>
         <div className={`form-group ${formErrors.profileImage ? 'error' : ''}`}>
           <label className="form-label">Upload Profile Photo</label>
           <div className="upload-area">
@@ -88,7 +124,12 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                width: '240px',
+                height: '240px',
+                borderRadius: '32px',
+                border: '4px solid rgba(36, 160, 181, 0.5)',
+                backgroundColor: '#0E464F'
               }}
             >
               {isUploading && <LoadingSpinner />}
@@ -112,9 +153,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0
+                      borderRadius: '32px'
                     }}
                   />
                 ) : (
@@ -128,6 +167,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
               </div>
               <input
                 type="file"
+                required
                 accept="image/*"
                 onChange={onImageUpload}
                 aria-label="Upload profile photo"
@@ -217,6 +257,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
             type="submit" 
             className="btn btn-primary"
             aria-label="Complete booking"
+            disabled={isUploading || !!uploadError} // Disable if uploading or if there's an upload error
           >
             Get My {selectedTicketPrice === 0 ? 'Free ' : ''}Ticket
           </button>

@@ -3,6 +3,7 @@ export interface TicketType {
   price: number;
   available: number;
   label: string;
+  total: number;
 }
 
 export interface BookingState {
