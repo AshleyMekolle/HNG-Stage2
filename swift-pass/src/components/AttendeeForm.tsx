@@ -2,7 +2,6 @@ import React from 'react';
 import { CloudUpload, Mail } from 'lucide-react';
 import { FormErrors, UserInfo } from '../types/types';
 
-
 export type ImageDropHandler = (e: React.DragEvent<HTMLDivElement>) => Promise<void>;
 export type ImageUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 
@@ -18,6 +17,53 @@ interface AttendeeFormProps {
   selectedTicketPrice?: number;
 }
 
+const LoadingSpinner = () => {
+  return (
+    <div className="spinner-wrapper">
+      <div className="spinner-track"></div>
+      <div className="spinner"></div>
+      <style>{`
+        .spinner-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 32px;
+          height: 32px;
+          z-index: 10;
+        }
+
+        .spinner-track {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 3px solid #e5e7eb;
+          border-radius: 50%;
+        }
+
+        .spinner {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 3px solid transparent;
+          border-top-color: #3b82f6;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const AttendeeForm: React.FC<AttendeeFormProps> = ({
   userInfo,
   formErrors,
@@ -25,22 +71,61 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
   onSubmit,
   onImageUpload,
   onBack,
+  isUploading,
   selectedTicketPrice
 }) => {
   return (
     <div className="details">
       <form onSubmit={onSubmit} noValidate>
-        {/* Image Upload Section */}
         <div className={`form-group ${formErrors.profileImage ? 'error' : ''}`}>
           <label className="form-label">Upload Profile Photo</label>
           <div className="upload-area">
-            <div className="upload-image-area">
-              {profileImage ? (
-                <img src={profileImage} alt="Profile" className="upload-preview" />
-              ) : (
-                <CloudUpload className="upload-icon" size={32} aria-hidden="true" />
-              )}
-              <span>Drag & drop or click to upload</span>
+            <div 
+              className="upload-image-area" 
+              style={{ 
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}
+            >
+              {isUploading && <LoadingSpinner />}
+              <div 
+                style={{ 
+                  opacity: isUploading ? 0.5 : 1,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative'
+                }}
+              >
+                {profileImage ? (
+                  <img 
+                    src={profileImage} 
+                    alt="Profile" 
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0
+                    }}
+                  />
+                ) : (
+                  <>
+                    <CloudUpload className="upload-icon" size={32} aria-hidden="true" />
+                    {!isUploading && (
+                      <span>Drag & drop or click to upload</span>
+                    )}
+                  </>
+                )}
+              </div>
               <input
                 type="file"
                 accept="image/*"
@@ -65,7 +150,6 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
 
         <div className="line"></div>
 
-        {/* Form Fields */}
         <div className={`form-name ${formErrors.name ? 'error' : ''}`}>
           <label htmlFor="name">Enter your name</label>
           <input

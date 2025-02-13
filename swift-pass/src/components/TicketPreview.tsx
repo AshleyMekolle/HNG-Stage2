@@ -35,6 +35,11 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({
                 src={userInfo.profileImage} 
                 alt="Profile" 
                 className="profile-image"
+                style={{
+                 
+                  objectFit: 'cover',
+                 
+                }}
               />
             ) : (
               <QRCodeSVG

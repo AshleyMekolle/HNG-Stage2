@@ -47,7 +47,6 @@ const App: React.FC = () => {
   }, [ticketTypes]);
 
   useEffect(() => {
-    // Load saved form data and profile image
     const loadSavedData = async () => {
       try {
         const savedData = await getFormData();
@@ -69,51 +68,97 @@ const App: React.FC = () => {
   }, []);
 
   const uploadToCloudinary = async (file: File): Promise<string> => {
+    if (!CLOUDINARY_UPLOAD_PRESET || !CLOUDINARY_CLOUD_NAME) {
+      throw new Error('Cloudinary configuration is missing');
+    }
+  
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
+   
+    formData.append('timestamp', String(Math.round(new Date().getTime() / 1000)));
+    
     try {
+      if (!file.type.startsWith('image/')) {
+        throw new Error('Invalid file type. Please upload an image file.');
+      }
+  
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
           method: 'POST',
-          body: formData
+          body: formData,
+          headers: {
+            'Accept': 'application/json',
+          }
         }
       );
-
+  
       if (!response.ok) {
-        throw new Error('Upload failed');
+        const errorData = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
+        console.error('Cloudinary Error Response:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorData
+        });
+        
+        if (errorData.error && errorData.error.message) {
+          throw new Error(`Upload failed: ${errorData.error.message}`);
+        }
+        throw new Error(`Upload failed: ${response.statusText}`);
       }
-
+  
       const data = await response.json();
       return data.secure_url;
     } catch (error) {
-      console.error('Upload failed:', error);
-      throw new Error('Image upload failed');
+      console.error('Detailed upload error:', error);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Image upload failed. Please try again.');
     }
   };
-
+  
+  const verifyCloudinaryConfig = () => {
+    if (!CLOUDINARY_CLOUD_NAME) {
+      console.error('Missing CLOUDINARY_CLOUD_NAME');
+      return false;
+    }
+    if (!CLOUDINARY_UPLOAD_PRESET) {
+      console.error('Missing CLOUDINARY_UPLOAD_PRESET');
+      return false;
+    }
+    return true;
+  };
+  
   const handleImageUpload = async (file: File) => {
+    if (!verifyCloudinaryConfig()) {
+      setFormErrors(prev => ({
+        ...prev,
+        profileImage: 'Image upload is not properly configured'
+      }));
+      return;
+    }
+  
     setIsUploading(true);
     setFormErrors(prev => ({ ...prev, profileImage: undefined }));
-
+  
     try {
       const imageUrl = await uploadToCloudinary(file);
       setProfileImage(imageUrl);
       setUserInfo(prev => ({ ...prev, profileImage: imageUrl }));
       localStorage.setItem('profileImage', imageUrl);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to upload image. Please try again.';
+      console.error('Upload error:', error);
       setFormErrors(prev => ({
         ...prev,
-        profileImage: 'Failed to upload image. Please try again.'
+        profileImage: errorMessage
       }));
     } finally {
       setIsUploading(false);
     }
   };
-
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
