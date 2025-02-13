@@ -1,37 +1,35 @@
-import React, { useRef } from 'react';
+import React, { RefObject } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Download } from 'lucide-react';
+import Barcode from 'react-barcode';
 import { UserInfo, BookingState } from '../types/types';
-import StepIndicator from './StepIndicator';
 
-interface TicketConfirmationProps {
+interface TicketPreviewProps {
   userInfo: UserInfo;
   bookingState: BookingState;
+  ticketRef: RefObject<HTMLDivElement | null>;
   onDownload: () => void;
   onBookAnother: () => void;
 }
 
-const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
+const TicketPreview: React.FC<TicketPreviewProps> = ({
   userInfo,
   bookingState,
+  ticketRef,
   onDownload,
   onBookAnother
 }) => {
-  const ticketRef = useRef<HTMLDivElement>(null);
-
   return (
     <>
-      <StepIndicator currentStep={3} title="Ready" />
-
-      <div className="event-banner">
+      <div className="event-banner-ready">
         <h2>Your Ticket is Booked!</h2>
-        <p>You can download or check your email for a copy</p>
+        <p>Check your email or you can download it</p>
       </div>
 
       <div className="ticket-preview" ref={ticketRef}>
         <div className="ticket-content">
           <div className="ticket-header">
             <h3 className="ticket-title">Techember Fest '25</h3>
+            <div className="event-location">📍 04 Rumens road, Ikoyi, Lagos || March 15, 2025 | 7:00 PM</div> 
             {userInfo.profileImage ? (
               <img 
                 src={userInfo.profileImage} 
@@ -64,25 +62,17 @@ const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
               <span className="detail-label">Quantity</span>
               <span className="detail-value">{bookingState.quantity}</span>
             </div>
+            <div className="detail-group-special">
+              <span className="detail-label">Special request?</span>
+              <span className="detail-value">{userInfo.project}</span>
+            </div>
           </div>
-
+          
           <div className="ticket-divider"></div>
-
-          <div className="detail-group">
-            <span className="detail-label">Venue</span>
-            <span className="detail-value">04 Rumens road, Ikoyi, Lagos</span>
-          </div>
-          <div className="detail-group">
-            <span className="detail-label">Date & Time</span>
-            <span className="detail-value">March 15, 2025 | 7:00 PM</span>
-          </div>
-
           <div className="barcode-section">
-            <QRCodeSVG
-              value={`https://techember-fest.com/ticket/${userInfo.email}`}
-              size={120}
-              level="H"
-              style={{ background: 'white', padding: '8px', borderRadius: '8px' }}
+            <Barcode 
+              value="1234567890" 
+              displayValue={true}
             />
           </div>
         </div>
@@ -101,7 +91,6 @@ const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
           onClick={onDownload}
           aria-label="Download ticket"
         >
-          <Download size={16} aria-hidden="true" />
           Download Ticket
         </button>
       </div>
@@ -109,4 +98,4 @@ const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
   );
 };
 
-export default TicketConfirmation;
+export default TicketPreview;
