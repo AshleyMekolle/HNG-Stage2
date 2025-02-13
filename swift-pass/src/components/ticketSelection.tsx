@@ -20,7 +20,6 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({
 }) => {
   return (
     <div className="event-container">
-   
       <div className="event-banner">
         <h1 className="event-title">Techember Fest '25</h1>
         <p className="event-description">
@@ -32,7 +31,6 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({
       </div>
       <div className="line"></div>
 
-    
       <div className="select">
         Select ticket type
         <div className="ticket-grid" role="radiogroup" aria-label="Ticket options">
@@ -56,7 +54,6 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({
                 }
               }}
             >
-             
               <div className="ticket-price">
                 {ticket.price === 0 ? 'Free' : `$${ticket.price}`}
               </div>
@@ -64,7 +61,9 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({
               <div className="ticket-type">{ticket.label}</div>
 
               <div className="ticket-availability">
-                {ticket.available === 0 ? 'SOLD OUT' : `${ticket.available}/${ticket.total}`}
+                {ticket.available === 0
+                  ? 'SOLD OUT'
+                  : `${ticket.available}/${ticket.total || ticket.available}`}
               </div>
             </div>
           ))}

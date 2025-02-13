@@ -13,15 +13,16 @@ import './App.css';
 const CLOUDINARY_CLOUD_NAME = 'dywxwwecr';
 const CLOUDINARY_UPLOAD_PRESET = 'hng-ticket-conference';
 
+
 const getInitialTicketTypes = (): TicketType[] => {
   const storedTickets = localStorage.getItem('ticketTypes');
   if (storedTickets) {
     return JSON.parse(storedTickets);
   }
   return [
-    { type: 'REGULAR', price: 0, available: 20, label: 'REGULAR ACCESS', total: 20 },
-    { type: 'VIP', price: 50, available: 20, label: 'VIP ACCESS', total: 20 },
-    { type: 'VVIP', price: 150, available: 20, label: 'VVIP ACCESS', total: 20 },
+    { type: 'REGULAR', price: 0, available: 20, label: 'REGULAR ACCESS', total: 20 }, 
+    { type: 'VIP', price: 50, available: 20, label: 'VIP ACCESS', total: 20 }, 
+    { type: 'VVIP', price: 150, available: 20, label: 'VVIP ACCESS', total: 20 }, 
   ];
 };
 
@@ -40,6 +41,7 @@ const App: React.FC = () => {
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [uploadError, setUploadError] = useState<string | null>(null); 
   const ticketRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const App: React.FC = () => {
           body: formData,
           headers: {
             'Accept': 'application/json',
-          },
+          }
         }
       );
 
@@ -98,7 +100,7 @@ const App: React.FC = () => {
         console.error('Cloudinary Error Response:', {
           status: response.status,
           statusText: response.statusText,
-          errorData,
+          errorData
         });
 
         if (errorData.error && errorData.error.message) {
@@ -118,29 +120,9 @@ const App: React.FC = () => {
     }
   };
 
-  const verifyCloudinaryConfig = () => {
-    if (!CLOUDINARY_CLOUD_NAME) {
-      console.error('Missing CLOUDINARY_CLOUD_NAME');
-      return false;
-    }
-    if (!CLOUDINARY_UPLOAD_PRESET) {
-      console.error('Missing CLOUDINARY_UPLOAD_PRESET');
-      return false;
-    }
-    return true;
-  };
-
   const handleImageUpload = async (file: File) => {
-    if (!verifyCloudinaryConfig()) {
-      setFormErrors(prev => ({
-        ...prev,
-        profileImage: 'Image upload is not properly configured',
-      }));
-      return;
-    }
-
     setIsUploading(true);
-    setFormErrors(prev => ({ ...prev, profileImage: undefined }));
+    setUploadError(null); 
 
     try {
       const imageUrl = await uploadToCloudinary(file);
@@ -148,12 +130,8 @@ const App: React.FC = () => {
       setUserInfo(prev => ({ ...prev, profileImage: imageUrl }));
       localStorage.setItem('profileImage', imageUrl);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to upload image. Please try again.';
       console.error('Upload error:', error);
-      setFormErrors(prev => ({
-        ...prev,
-        profileImage: errorMessage,
-      }));
+      setUploadError('Failed to upload image. Please try again.'); 
     } finally {
       setIsUploading(false);
     }
@@ -228,7 +206,6 @@ const App: React.FC = () => {
     }
   };
 
-
   const handleAttendeeDetailsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -246,6 +223,12 @@ const App: React.FC = () => {
     }
     if (!validateEmail(newUserInfo.email)) {
       errors.email = 'Please enter a valid email address';
+    }
+    if (!newUserInfo.profileImage) {
+      errors.profileImage = 'Please upload an image';
+    }
+    if (uploadError) {
+      errors.profileImage = uploadError; 
     }
 
     if (Object.keys(errors).length > 0) {
@@ -313,6 +296,7 @@ const App: React.FC = () => {
             onBack={handleBack}
             selectedTicketPrice={bookingState.selectedTicket?.price}
             isUploading={isUploading}
+            uploadError={uploadError} 
           />
         );
       case 3:

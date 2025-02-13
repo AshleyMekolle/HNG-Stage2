@@ -46,30 +46,6 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Road Rage';
-  src: url('/fonts/RoadRage.woff2') format('woff2'),
-       url('/fonts/RoadRage.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('/fonts/Roboto.woff2') format('woff2'),
-       url('/fonts/Roboto.woff') format('woff');
-  font-weight: 100 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('/fonts/Roboto-Italic.woff2') format('woff2'),
-       url('/fonts/Roboto-Italic.woff') format('woff');
-  font-weight: 100 900;
-  font-style: italic;
-}
-
 :root {
   --primary: #36B5B0;
   --background: #041E23;
