@@ -3,15 +3,15 @@ import { toPng } from 'html-to-image';
 import Header from './components/Header';
 import StepIndicator from './components/StepIndicator';
 import TicketSelection from './components/ticketSelection';
-import AttendeeForm from './components/AttendeeDetails'
-import TicketPreview from './components/TicketConfirmation';
+import AttendeeForm from './components/AttendeeForm'
+import TicketPreview from './components/TicketPreview';
 import { BookingState, TicketType, FormErrors, UserInfo } from './types/types';
 import { validateEmail } from './utils/validation';
 import { saveFormData, getFormData } from './utils/IndexedDB';
 import './App.css';
 
 const CLOUDINARY_CLOUD_NAME = 'dywxwwecr';
-const CLOUDINARY_UPLOAD_PRESET = 'your_preset';
+const CLOUDINARY_UPLOAD_PRESET = 'hng-ticket-conference';
 
 const getInitialTicketTypes = (): TicketType[] => {
   const storedTickets = localStorage.getItem('ticketTypes');
