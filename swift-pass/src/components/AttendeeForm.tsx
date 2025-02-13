@@ -14,7 +14,7 @@ interface AttendeeFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>, errors: FormErrors) => void;
   onBack: () => void;
   isUploading: boolean;
-  uploadError: string | null; // Add uploadError prop
+  uploadError: string | null; 
   selectedTicketPrice?: number;
 }
 
@@ -73,7 +73,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
   onImageUpload,
   onBack,
   isUploading,
-  uploadError, // Add uploadError prop
+  uploadError,
   selectedTicketPrice
 }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,7 +83,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
 
-    // Validate all required fields
+
     const errors: FormErrors = {};
     if (!name.trim()) {
       errors.name = 'Name is required';
@@ -97,16 +97,14 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
       errors.profileImage = 'Please upload an image';
     }
     if (uploadError) {
-      errors.profileImage = uploadError; // Display upload error message
+      errors.profileImage = uploadError;
     }
 
-    // If there are errors, prevent form submission and display error messages
     if (Object.keys(errors).length > 0) {
       onSubmit(e, errors);
       return;
     }
 
-    // If no errors, proceed with form submission
     onSubmit(e, {});
   };
 
@@ -257,7 +255,7 @@ const AttendeeForm: React.FC<AttendeeFormProps> = ({
             type="submit" 
             className="btn btn-primary"
             aria-label="Complete booking"
-            disabled={isUploading || !!uploadError} // Disable if uploading or if there's an upload error
+            disabled={isUploading || !!uploadError}
           >
             Get My {selectedTicketPrice === 0 ? 'Free ' : ''}Ticket
           </button>
