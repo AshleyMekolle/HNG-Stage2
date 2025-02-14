@@ -39,13 +39,6 @@
   }
 }
 
-@font-face {
-  font-family: 'JejuMyeongjo';
-  src: url('../fonts/JejuMyeongjo-Regular.ttf') format('truetype'); 
-  font-weight: normal;
-  font-style: normal;
-}
-
 :root {
   --primary: #36B5B0;
   --background: #041E23;
@@ -138,8 +131,7 @@ body {
   font-size: 32px;
   margin: 0;
   font-weight: 400;
-  font-family: 'JejuMyeongjo', sans-serif;
-  /* jeju */
+  font-family: 'Nanum Myeongjo', sans-serif;
 }
 
 .step-number {
@@ -504,8 +496,7 @@ body {
   border-radius: 8px;      
   box-sizing: border-box;
   margin-top: 24px;
-  font-family: 'JejuMyeongjo', sans-serif;
-  /* jeju */
+  font-family: 'Nanum Myeongjo', sans-serif;
 }
 
 .btn {
@@ -632,8 +623,7 @@ body {
   display: flex;
   gap: 1.5rem;
   align-items: center;
-  font-family: 'JejuMyeongjo', sans-serif;
-  /* jeju */
+  font-family: 'Nanum Myeongjo', sans-serif;
 }
 
 .nav-links a {
@@ -670,8 +660,7 @@ body {
   text-align: center; 
   display: inline-block;
   cursor: pointer;
-  font-family:  'JejuMyeongjo', sans-serif;
-  /* jeju */
+  font-family:  'Nanum Myeongjo', sans-serif;
 }
 
 .my-tickets-btn:hover{
