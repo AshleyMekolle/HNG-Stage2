@@ -1,4 +1,7 @@
 
+/* I used Nanum Myeongjo font since JejuMyeongjo-Regular font wasn't available on google font 
+and when downloaded locally, I had build issue */
+
 @keyframes slideLeft {
   from {
     transform: translateX(0);
